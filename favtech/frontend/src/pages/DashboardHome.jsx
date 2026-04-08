@@ -17,6 +17,14 @@ const DashboardHome = () => {
 
   const [activityLogs, setActivityLogs] = useState([]);
 
+  // Time-based greeting
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return "Good Morning";
+    if (hour < 17) return "Good Afternoon";
+    return "Good Evening";
+  };
+
   useEffect(() => {
     const fetchStats = async () => {
       try {
@@ -110,18 +118,26 @@ const DashboardHome = () => {
 
   return (
     <div className="space-y-10 pb-20 max-w-7xl mx-auto">
-      {/* Welcome Banner */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-         <div className="space-y-2">
-            <h1 className="text-3xl font-black text-navy tracking-tight">Overview</h1>
-            <p className="text-sm font-medium text-slate-500 relative bg-white pl-4 border-l-4 border-teal-500 py-1">
-              Welcome back, <span className="font-bold text-navy">{user.name}</span>
-            </p>
+      {/* Personalized Header Section */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+         <div className="space-y-1">
+            <h1 className="text-4xl font-black text-navy tracking-tight flex items-center gap-3">
+              {getGreeting()}, <span className="text-teal-500">{user.name?.split(' ')[0]}</span>
+            </h1>
+            <div className="flex items-center gap-2">
+              <div className="px-2 py-0.5 bg-navy text-white text-[0.6rem] font-bold uppercase rounded-md tracking-widest">Diamond Tier</div>
+              <p className="text-sm font-medium text-slate-400">Your social growth engine is fully operational.</p>
+            </div>
          </div>
-         <div className="flex items-center gap-4">
-            <button onClick={() => navigate('/dashboard/referrals')} className="flex items-center gap-3 px-6 py-3 bg-white border border-slate-100 rounded-2xl shadow-[0_5px_15px_-5px_rgba(0,0,0,0.05)] hover:shadow-lg hover:-translate-y-0.5 transition-all">
-               <Gift className="w-5 h-5 text-teal-500" />
-               <span className="text-[0.65rem] font-black uppercase text-navy tracking-widest">Refer & Earn</span>
+         <div className="flex items-center gap-3">
+            <button onClick={() => navigate('/dashboard/add-funds')} className="group px-6 py-4 bg-navy text-white rounded-2xl flex items-center gap-3 hover:translate-y-[-2px] transition-all shadow-xl shadow-navy/20 active:scale-95">
+               <div className="w-8 h-8 bg-white/10 rounded-xl flex items-center justify-center group-hover:bg-teal-500 transition-colors">
+                 <Wallet className="w-4 h-4 text-white" />
+               </div>
+               <div className="text-left pr-4">
+                 <p className="text-[0.6rem] font-black uppercase tracking-widest opacity-40 leading-none mb-1">Available Capital</p>
+                 <p className="text-lg font-black leading-none tracking-tight">₦{Number(user.wallet_balance || 0).toLocaleString()}</p>
+               </div>
             </button>
          </div>
       </div>
@@ -132,26 +148,31 @@ const DashboardHome = () => {
           <div
             key={card.label}
             className={`
-              bg-white p-6 rounded-[2.5rem] border border-slate-100 shadow-sm transition-all duration-700 hover:shadow-xl hover:border-teal-500/20 group
+              bg-white p-7 rounded-[3rem] border border-slate-100 shadow-[0_10px_30px_-15px_rgba(0,0,0,0.05)] transition-all duration-700 hover:shadow-2xl hover:translate-y-[-4px] group relative overflow-hidden
               ${animateCards ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
             `}
             style={{ transitionDelay: `${i * 100}ms` }}
           >
-            <div className="flex items-center justify-between mb-6">
-              <div className={`w-12 h-12 bg-gradient-to-br ${card.color} rounded-2xl flex items-center justify-center text-white shadow-lg transition-transform group-hover:scale-110 duration-500`}>
+            <div className={`absolute top-0 right-0 w-24 h-24 bg-gradient-to-br ${card.color} opacity-0 group-hover:opacity-5 transition-opacity blur-2xl rounded-full`} />
+            
+            <div className="flex items-center justify-between mb-8">
+              <div className={`w-14 h-14 bg-gradient-to-br ${card.color} rounded-[1.5rem] flex items-center justify-center text-white shadow-xl transition-transform group-hover:scale-110 duration-500`}>
                 {card.icon}
               </div>
               <button 
                 onClick={() => navigate(card.action.path)}
-                className="w-8 h-8 rounded-xl bg-slate-50 text-slate-400 flex items-center justify-center hover:bg-navy hover:text-white transition-all shadow-inner"
+                className="w-10 h-10 rounded-2xl bg-slate-50 text-slate-400 flex items-center justify-center hover:bg-navy hover:text-white transition-all"
               >
-                <ArrowRight className="w-4 h-4" />
+                <ArrowUpRight className="w-5 h-5" />
               </button>
             </div>
-            <div>
-              <p className="text-[0.65rem] font-black text-slate-400 uppercase tracking-[0.2em] mb-1">{card.label}</p>
-              <h3 className="text-2xl font-black text-navy tracking-tighter">{card.value}</h3>
-              <p className="text-[0.6rem] font-bold text-slate-300 uppercase tracking-widest mt-1 opacity-0 group-hover:opacity-100 transition-opacity">{card.sub}</p>
+            <div className="space-y-1">
+              <p className="text-[0.65rem] font-black text-slate-400 uppercase tracking-[0.2em]">{card.label}</p>
+              <h3 className="text-3xl font-black text-navy tracking-tight">{card.value}</h3>
+              <div className="flex items-center gap-2 pt-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-teal-500" />
+                <p className="text-[0.6rem] font-bold text-slate-300 uppercase tracking-widest">{card.sub}</p>
+              </div>
             </div>
           </div>
         ))}
@@ -160,27 +181,29 @@ const DashboardHome = () => {
       {/* Main Grid: Quick Order and Balance */}
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Deep Dive Action */}
-        <div className="lg:col-span-2 bg-[#0f172a] p-10 py-12 rounded-[2.5rem] text-white overflow-hidden relative group shadow-2xl shadow-navy/10">
-           <div className="absolute top-0 right-0 w-80 h-80 bg-teal-500/20 blur-[100px] rounded-full translate-x-10 translate-y-[-100px] pointer-events-none" />
-           <div className="absolute bottom-0 left-0 w-80 h-80 bg-navy blur-[100px] rounded-full translate-x-[-100px] pointer-events-none" />
+        <div className="lg:col-span-2 bg-[#0f172a] p-10 md:p-14 py-16 rounded-[3.5rem] text-white overflow-hidden relative group shadow-2xl shadow-navy/20">
+           <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-teal-500/10 blur-[120px] rounded-full translate-x-20 translate-y-[-200px] pointer-events-none" />
+           <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-purple-500/10 blur-[100px] rounded-full translate-x-[-100px] translate-y-[100px] pointer-events-none" />
            
-           <div className="relative z-10 flex flex-col h-full justify-between gap-10">
-              <div className="space-y-5">
-                 <div className="flex items-start flex-col gap-2">
-                    <h2 className="text-4xl md:text-5xl font-black tracking-tight leading-tight">Boost your social <br/>presence <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-cyan-300">instantly.</span></h2>
+           <div className="relative z-10 flex flex-col h-full justify-between gap-12">
+              <div className="space-y-6">
+                 <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full backdrop-blur-sm">
+                    <Zap className="w-4 h-4 text-teal-400" />
+                    <span className="text-[0.65rem] font-black uppercase tracking-widest text-white/60">Global API Delivery Network</span>
                  </div>
-                 <p className="text-base text-white/70 leading-relaxed font-medium max-w-[500px]">
-                   Access our premium catalog of high-quality, instant-start social media services. Gain followers, views, and engagements seamlessly.
+                 <h2 className="text-4xl md:text-6xl font-black tracking-tight leading-[1.1]">Elevate your brand's <br/>digital <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-cyan-300 italic">velocity.</span></h2>
+                 <p className="text-lg text-white/50 leading-relaxed font-medium max-w-[550px]">
+                   Deploy high-retention engagement clusters from our elite-tier server array. Synchronized scaling for the modern social ecosystem.
                  </p>
               </div>
 
-              <div className="flex flex-wrap gap-4 items-center mt-4">
-                 <button onClick={() => navigate('/dashboard/new-order')} className="px-8 py-4 bg-teal-500 text-white font-black text-sm rounded-2xl hover:bg-teal-400 hover:shadow-[0_0_40px_rgba(20,184,166,0.3)] transition-all flex items-center gap-3">
-                    Place New Order <ArrowRight className="w-5 h-5" />
+              <div className="flex flex-wrap gap-5 items-center">
+                 <button onClick={() => navigate('/dashboard/new-order')} className="px-10 py-5 bg-teal-500 text-white font-black text-sm rounded-[1.5rem] hover:bg-teal-400 hover:shadow-[0_20px_40px_-10px_rgba(20,184,166,0.3)] transition-all flex items-center gap-3 active:scale-95">
+                    Initialize Deployment <ArrowRight className="w-5 h-5" />
                  </button>
-                 <div className="flex items-center gap-3 px-4 py-2 border border-white/10 rounded-xl bg-white/5 backdrop-blur-md">
-                    <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse shadow-[0_0_10px_#34d399]" />
-                    <span className="text-xs font-bold text-white/80">Services Online</span>
+                 <div className="hidden md:flex flex-col">
+                    <p className="text-[0.65rem] font-black uppercase tracking-widest text-white/20">System Latency</p>
+                    <p className="text-sm font-black text-teal-400 tracking-tighter">0.02ms <span className="text-white/40 font-bold ml-1">Normal</span></p>
                  </div>
               </div>
            </div>
@@ -215,33 +238,43 @@ const DashboardHome = () => {
       </div>
 
       {/* Activity Monitor */}
-      <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm p-8 md:p-10 relative">
-         <div className="flex items-center justify-between mb-8 border-b border-slate-50 pb-6">
-            <h2 className="font-bold text-navy text-lg tracking-tight">Recent Activity</h2>
-            <button onClick={() => navigate('/dashboard/orders')} className="text-[0.7rem] font-bold text-teal-600 hover:text-teal-400 transition-colors uppercase tracking-widest">View All</button>
+      <div className="bg-white rounded-[3rem] border border-slate-100 shadow-[0_15px_50px_-15px_rgba(0,0,0,0.05)] p-8 md:p-12 relative overflow-hidden group">
+         <div className="absolute top-0 right-0 w-40 h-40 bg-slate-50 rounded-full translate-x-20 translate-y-[-200px] group-hover:translate-y-[-80px] transition-transform duration-1000" />
+         
+         <div className="flex items-center justify-between mb-10 relative z-10">
+            <div className="space-y-1">
+               <h2 className="font-black text-navy text-2xl tracking-tight">Deployment Stream</h2>
+               <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">Real-time status updates</p>
+            </div>
+            <button onClick={() => navigate('/dashboard/orders')} className="group flex items-center gap-2 px-5 py-2.5 bg-slate-50 rounded-full text-[0.6rem] font-black text-navy hover:bg-navy hover:text-white transition-all uppercase tracking-widest shadow-inner">
+               Full Audit <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+            </button>
          </div>
 
-         <div className="space-y-8">
+         <div className="space-y-6 relative z-10">
             {activityLogs.map((act, i) => (
-              <div key={i} className="flex gap-6 items-start group relative">
-                 {i !== activityLogs.length - 1 && (
-                   <div className="absolute left-[1.1rem] top-10 bottom-0 w-[2px] bg-slate-50 group-hover:bg-teal-100 transition-colors" />
-                 )}
-                 <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 transition-all z-10
-                    ${act.type === 'order' ? 'bg-blue-50 text-blue-500 border border-blue-100' : 'bg-teal-50 text-teal-500 border border-teal-100'}`}>
-                    {act.type === 'order' ? <Package className="w-4 h-4" /> : <Wallet className="w-4 h-4" />}
+              <div key={i} className="flex gap-6 items-center p-4 rounded-3xl hover:bg-slate-50/50 border border-transparent hover:border-slate-100 transition-all group/item">
+                 <div className={`w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 transition-all shadow-md
+                    ${act.type === 'order' ? 'bg-blue-600 text-white' : 'bg-teal-500 text-white'}`}>
+                    {act.type === 'order' ? <Package className="w-5 h-5" /> : <Wallet className="w-5 h-5" />}
                  </div>
-                 <div className="flex-1 pb-2">
-                    <div className="flex justify-between items-start mb-1">
-                      <p className="text-xs font-black text-navy uppercase tracking-tight">{act.text}</p>
-                      <span className="text-[0.6rem] font-bold text-slate-500 uppercase tracking-widest">{act.time}</span>
+                 <div className="flex-1">
+                    <div className="flex justify-between items-start">
+                       <p className="text-sm font-black text-navy tracking-tight">{act.text}</p>
+                       <span className="text-[0.6rem] font-bold text-slate-300 uppercase tracking-widest">{act.time}</span>
                     </div>
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 mt-1">
                        <span className={`px-2 py-0.5 rounded-lg text-[0.5rem] font-black uppercase tracking-widest
-                          ${act.status === 'completed' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700 animate-pulse'}`}>
+                          ${act.status === 'completed' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}`}>
                           {act.status}
                        </span>
-                       <span className="text-[0.55rem] font-black text-slate-400 uppercase tracking-widest">Thread: #{Math.floor(Math.random()*90000+10000)}</span>
+                       <div className="h-1 w-1 bg-slate-200 rounded-full" />
+                       <span className="text-[0.55rem] font-black text-slate-300 uppercase tracking-widest italic tracking-[0.2em]">Node_{Math.floor(Math.random()*999)}</span>
+                    </div>
+                 </div>
+                 <div className="opacity-0 group-hover/item:opacity-100 transition-opacity">
+                    <div className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-slate-300 hover:text-teal-500 transition-colors">
+                       <ArrowRight className="w-4 h-4" />
                     </div>
                  </div>
               </div>
