@@ -27,13 +27,6 @@ const Logo = ({ className = 'h-10', variant = 'full' }) => {
         </div>
       )}
       
-      {variant === 'full' && (
-        <div className="flex flex-col">
-          <span className="text-2xl font-black text-navy leading-none tracking-tight">
-            {settings.site_name.split(' ')[0]}<span className="text-seafoam underline decoration-2 underline-offset-4">{settings.site_name.split(' ').slice(1).join(' ')}</span>
-          </span>
-        </div>
-      )}
     </div>
   );
 };

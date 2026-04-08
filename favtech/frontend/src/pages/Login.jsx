@@ -43,7 +43,6 @@ const Login = () => {
             <div className="w-10 h-10 bg-navy rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-xl">F</span>
             </div>
-            <span className="text-2xl font-bold text-navy">FavTech</span>
           </Link>
           <h1 className="text-3xl font-extrabold text-navy">Welcome Back</h1>
           <p className="text-slate-500 font-medium mt-2">Enter your credentials to access your dashboard</p>

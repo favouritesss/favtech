@@ -31,7 +31,6 @@ const Register = () => {
             <div className="w-10 h-10 bg-navy rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-xl">F</span>
             </div>
-            <span className="text-2xl font-bold text-navy">FavTech</span>
           </Link>
           <h1 className="text-3xl font-extrabold text-navy">Create Account</h1>
           <p className="text-slate-500 font-medium mt-2">Join thousands of elite marketing professionals</p>

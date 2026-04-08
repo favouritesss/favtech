@@ -39,8 +39,8 @@ const Navbar = () => {
         initialView={authModal.view}
       />
 
-      <nav className={`fixed top-0 left-0 w-full z-[70] transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-xl shadow-lg py-5' : 'bg-white shadow-sm py-8'}`}>
-        <div className="max-w-7xl mx-auto px-6 md:px-10 flex justify-between items-center">
+      <nav className={`fixed top-0 left-0 w-full z-[100] transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-xl shadow-md py-3 lg:py-5' : 'bg-white shadow-sm py-5 lg:py-8'}`}>
+        <div className="max-w-7xl mx-auto px-5 lg:px-10 flex justify-between items-center">
           
           {/* Logo */}
           <Link to="/" className="flex-shrink-0">
@@ -64,7 +64,6 @@ const Navbar = () => {
                     className="absolute -bottom-1 left-0 h-0.5 bg-seafoam transition-all duration-300"
                     style={{ width: isActive ? '100%' : '0%' }}
                   />
-                  {/* Hover underline for inactive */}
                   {!isActive && (
                     <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-seafoam/50 group-hover:w-full transition-all duration-300" />
                   )}
@@ -101,7 +100,7 @@ const Navbar = () => {
       </nav>
 
       {/* Mobile Menu */}
-      <div className={`fixed inset-0 z-[60] bg-[#0f172a]/80 backdrop-blur-md flex flex-col transition-all duration-500 ${isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+      <div className={`fixed inset-0 z-[150] bg-[#0f172a]/95 backdrop-blur-md flex flex-col transition-all duration-500 ${isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
         <div className="flex flex-col items-center justify-center flex-1 gap-8 p-10">
           {navLinks.map((item, i) => {
             const isActive = location.pathname === item.path;

@@ -65,14 +65,15 @@ const Footer = () => {
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8">
             <div className="space-y-2">
               <p className="text-[0.6rem] font-black text-slate-500 uppercase tracking-[0.2em]">
-                &copy; {currentYear} FavTech Global Operations.
+                &copy; {currentYear} Premium SMM Global Operations.
+                &copy; {currentYear} Global Operations.
               </p>
               <p className="text-[0.5rem] font-bold text-slate-600 uppercase tracking-widest leading-loose">
                 Registered Digital Asset Services Provider. All systems encrypted.
               </p>
             </div>
             <p className="max-w-3xl text-[0.55rem] font-bold text-slate-500 uppercase tracking-widest leading-relaxed text-left lg:text-right opacity-50">
-              Disclaimer: FavTech is an independent intermediary service. We are not affiliated with, endorsed by, or sponsored by Meta, ByteDance, or X Corp. All trademarks are the property of their respective owners. Use of this platform constitutes acceptance of all operational protocols.
+              Disclaimer: This is an independent intermediary service. We are not affiliated with, endorsed by, or sponsored by Meta, ByteDance, or X Corp. All trademarks are the property of their respective owners. Use of this platform constitutes acceptance of all operational protocols.
             </p>
           </div>
           

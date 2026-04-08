@@ -81,7 +81,6 @@ const AdminLayout = () => {
           </div>
           {sidebarOpen && (
             <div className="flex-1">
-              <p className="font-black text-sm leading-none text-navy">FavTech</p>
               <p className="text-teal-500 text-[0.5rem] font-bold uppercase tracking-widest mt-0.5">Admin Console</p>
             </div>
           )}
@@ -158,7 +157,7 @@ const AdminLayout = () => {
           </button>
           <div>
             <p className="font-black text-sm uppercase tracking-widest" style={{ color: 'var(--admin-text-primary)' }}>{currentPage}</p>
-            <p className="text-[0.5rem] font-bold uppercase tracking-widest" style={{ color: 'var(--admin-text-muted)' }}>FavTech Admin Console</p>
+            <p className="text-[0.5rem] font-bold uppercase tracking-widest" style={{ color: 'var(--admin-text-muted)' }}>Admin Console</p>
           </div>
           <div className="ml-auto flex items-center gap-3">
             {/* Theme Toggle */}
