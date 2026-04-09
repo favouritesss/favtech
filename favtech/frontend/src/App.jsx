@@ -85,7 +85,9 @@ const ProtectedRoute = ({ children, adminOnly = false }) => {
 const AppContent = () => {
   const [isAppLoading, setIsAppLoading] = useState(false);
   const location = useLocation();
-  const isAuthPage = ['/login', '/register'].includes(location.pathname);
+  const searchParams = new URLSearchParams(location.search);
+  const overlay = searchParams.get('overlay');
+  const isAuthPage = ['/login', '/register'].includes(location.pathname) || ['login', 'register'].includes(overlay);
   const isDashboard = location.pathname.startsWith('/dashboard');
   const isAdmin = location.pathname.startsWith('/admin');
   const isFullscreen = isAuthPage || isDashboard || isAdmin;

@@ -5,6 +5,6 @@
   "outputDirectory": "favtech/frontend/dist",
   "installCommand": "cd favtech/frontend && npm install --legacy-peer-deps",
   "rewrites": [
-    { "source": "/(.*)", "destination": "/favtech/frontend/$1" }
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
