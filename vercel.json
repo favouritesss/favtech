@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "public": true,
+  "buildCommand": "cd favtech/frontend && npm install && npm run build",
+  "outputDirectory": "favtech/frontend/dist",
+  "installCommand": "cd favtech/frontend && npm install",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/favtech/frontend/$1" }
+  ]
+}
