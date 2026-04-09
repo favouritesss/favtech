@@ -1,9 +1,9 @@
 {
   "version": 2,
   "public": true,
-  "buildCommand": "cd favtech/frontend && npm install && npm run build",
+  "buildCommand": "cd favtech/frontend && npm run build",
   "outputDirectory": "favtech/frontend/dist",
-  "installCommand": "cd favtech/frontend && npm install",
+  "installCommand": "cd favtech/frontend && npm install --legacy-peer-deps",
   "rewrites": [
     { "source": "/(.*)", "destination": "/favtech/frontend/$1" }
   ]
