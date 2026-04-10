@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink, Link, useLocation } from 'react-router-dom';
+import { NavLink, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useBrand } from '../context/BrandContext';
 import Logo from './Logo';
 import AuthOverlay from './AuthOverlay';
@@ -10,8 +10,8 @@ const Navbar = () => {
   const { settings } = useBrand();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [authModal, setAuthModal] = useState({ isOpen: false, view: 'login' });
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -33,11 +33,6 @@ const Navbar = () => {
 
   return (
     <>
-      <AuthOverlay
-        isOpen={authModal.isOpen}
-        onClose={() => setAuthModal({ ...authModal, isOpen: false })}
-        initialView={authModal.view}
-      />
 
       <nav className={`fixed top-0 left-0 w-full z-[100] transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-xl shadow-md py-3 lg:py-5' : 'bg-white shadow-sm py-5 lg:py-8'}`}>
         <div className="max-w-7xl mx-auto px-5 lg:px-10 flex justify-between items-center">
@@ -75,13 +70,13 @@ const Navbar = () => {
           {/* Desktop Auth Buttons */}
           <div className="hidden lg:flex items-center space-x-4">
             <button
-              onClick={() => setAuthModal({ isOpen: true, view: 'login' })}
+              onClick={() => navigate('/?overlay=login')}
               className="text-[0.6rem] font-black text-navy uppercase tracking-[0.3em] hover:text-seafoam transition-colors px-4 py-2"
             >
               Login
             </button>
             <button
-              onClick={() => setAuthModal({ isOpen: true, view: 'register' })}
+              onClick={() => navigate('/?overlay=register')}
               className="px-6 py-3 bg-navy text-white text-[0.6rem] font-black uppercase tracking-[0.3em] rounded-xl hover:bg-seafoam transition-all shadow-lg"
             >
               Register
@@ -123,13 +118,13 @@ const Navbar = () => {
 
           <div className="flex flex-col gap-4 w-full max-w-xs mt-8 pt-8 border-t border-white/10">
             <button
-              onClick={() => { setIsMenuOpen(false); setAuthModal({ isOpen: true, view: 'login' }); }}
+              onClick={() => { setIsMenuOpen(false); navigate('/?overlay=login'); }}
               className="w-full py-4 border border-white/20 text-white font-black text-xs uppercase tracking-widest rounded-2xl"
             >
               Login
             </button>
             <button
-              onClick={() => { setIsMenuOpen(false); setAuthModal({ isOpen: true, view: 'register' }); }}
+              onClick={() => { setIsMenuOpen(false); navigate('/?overlay=register'); }}
               className="w-full py-4 bg-seafoam text-white font-black text-xs uppercase tracking-widest rounded-2xl"
             >
               Register

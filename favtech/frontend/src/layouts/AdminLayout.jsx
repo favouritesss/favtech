@@ -6,6 +6,7 @@ import {
   ChevronDown, ChevronRight, TrendingUp, Menu, X, Activity, AlertTriangle, Moon, Sun
 } from 'lucide-react';
 import { useAdminTheme } from '../context/AdminThemeContext';
+import { useBrand } from '../context/BrandContext';
 import { SESSION_KEYS } from '../services/api';
 
 const ADMIN_NAV = [
@@ -37,6 +38,7 @@ const ADMIN_NAV = [
 const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const { isDarkMode, toggleTheme } = useAdminTheme();
+  const { settings } = useBrand();
   const navigate = useNavigate();
   const location = useLocation();
 
