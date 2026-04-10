@@ -158,8 +158,13 @@ app.get('/api/setup-db', async (req, res) => {
 
     res.json({ message: 'Database Synchronized Successfully!', admin: 'admin@favtech.com / adminpassword123' });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Sync failed: ' + err.message });
+    console.error('Setup Error:', err);
+    res.status(500).json({ 
+      error: 'Sync failed', 
+      details: err.message,
+      code: err.code,
+      hint: 'Check your Render DB_HOST and DB_PASSWORD environment variables.'
+    });
   }
 });
 
