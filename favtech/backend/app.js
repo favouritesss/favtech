@@ -50,6 +50,15 @@ app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(morgan('dev'));
 
+// Base Route (Health Check)
+app.get('/', (req, res) => {
+  res.json({ 
+    status: 'online', 
+    message: 'FavTech API Node is Active', 
+    timestamp: new Date().toISOString() 
+  });
+});
+
 // Database Connection Pool
 const pool = mysql.createPool({
   host: process.env.DB_HOST || 'localhost',
@@ -97,6 +106,62 @@ const logEvent = async (type, message, metadata = {}, ip = '0.0.0.0') => {
     console.error('Logging failed:', err);
   }
 };
+
+/* --- SYSTEM INITIALIZATION --- */
+app.get('/api/setup-db', async (req, res) => {
+  try {
+    console.log('🚀 Manual Database Sync Triggered...');
+    
+    // Create Users Table
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS users (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        password VARCHAR(255) NOT NULL,
+        role ENUM('user', 'admin', 'support', 'finance') DEFAULT 'user',
+        wallet_balance DECIMAL(15, 2) DEFAULT 0.00,
+        status ENUM('active', 'suspended', 'banned') DEFAULT 'active',
+        referral_code VARCHAR(50) UNIQUE,
+        referred_by INT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    // Create App Settings Table
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS app_settings (
+        id INT PRIMARY KEY DEFAULT 1,
+        site_name VARCHAR(255) DEFAULT 'FavTech',
+        site_title VARCHAR(255) DEFAULT 'Premium SMM Platform',
+        currency_symbol VARCHAR(10) DEFAULT '₦',
+        logo_url VARCHAR(500),
+        voke_api_url VARCHAR(500) DEFAULT 'https://voke.io/api/v2',
+        global_margin DECIMAL(5, 2) DEFAULT 10.00,
+        enable_registration BOOLEAN DEFAULT TRUE,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+      )
+    `);
+
+    // Add more tables if needed...
+    await pool.query('INSERT IGNORE INTO app_settings (id) VALUES (1)');
+
+    // Ensure Admin exists
+    const [admins] = await pool.query('SELECT * FROM users WHERE role = "admin"');
+    if (admins.length === 0) {
+      const hashedPassword = await bcrypt.hash('adminpassword123', 10);
+      await pool.query(
+        'INSERT INTO users (name, email, password, role, wallet_balance) VALUES (?, ?, ?, ?, ?)',
+        ['Master Admin', 'admin@favtech.com', hashedPassword, 'admin', 99999]
+      );
+    }
+
+    res.json({ message: 'Database Synchronized Successfully!', admin: 'admin@favtech.com / adminpassword123' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Sync failed: ' + err.message });
+  }
+});
 
 /* --- AUTHENTICATION --- */
 app.post('/api/auth/register', async (req, res) => {
